@@ -6,6 +6,7 @@
 package Mexcoder.Graphics;
 
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.awt.Component;
  */
 public class BrensenhamLine extends SimpleLine {
 
-    public BrensenhamLine(Component c) {
+    public BrensenhamLine(BufferedImage c) {
         super(c);
     }
 

@@ -6,6 +6,7 @@
 package Mexcoder.Graphics;
 
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.awt.Component;
  */
 public class BrensenhamCircle extends SimpleCircle {
 
-    public BrensenhamCircle(Component c) {
+    public BrensenhamCircle(BufferedImage c) {
         super(c);
     }
 

@@ -17,6 +17,7 @@ import Mexcoder.Graphics.Pixel;
 import Mexcoder.Graphics.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -32,23 +33,26 @@ public class test extends Ventana {
     SimpleCircle c;
     BrensenhamCircle cc;
     MidpointCircle ccc;
+    BufferedImage b;
 
     public test() {
         super("test: linea");
         this.setVisible(true);
-        l = new SimpleLine(this);
-        ll = new DDALine(this);
-        lll = new BrensenhamLine(this);
-        llll = new MidpointLine(this);
-        r = new Rectangle(this);
-        c = new SimpleCircle(this);
-        cc = new BrensenhamCircle(this);
-        ccc = new MidpointCircle(this);
+        b = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        l = new SimpleLine(b);
+        ll = new DDALine(b);
+        lll = new BrensenhamLine(b);
+        llll = new MidpointLine(b);
+        r = new Rectangle(b);
+        c = new SimpleCircle(b);
+        cc = new BrensenhamCircle(b);
+        ccc = new MidpointCircle(b);
+        
+        doDrawing();
 
     }
-
-    public void paint(Graphics g) {
-
+    
+    protected void doDrawing(){
         //x0 --> x1 inclinada
         l.draw(10, 40, 310, 140, Color.RED);
         ll.draw(10, 50, 310, 150, Color.GREEN);
@@ -77,22 +81,14 @@ public class test extends Ventana {
         cc.draw(650, 340, 450, 140, Color.GREEN);
         ccc.draw(400, 90, 700, 390, Color.orange);
 
-       Elipse l = new Elipse(this);
+       Elipse l = new Elipse(b);
        l.draw(10, 400, 310, 550);
        l.floodFill(Color.GREEN);
-        /*l.draw(100, 100, 400, 400,Color.BLUE);
-        l.draw(100, 400, 400, 400,Color.blue);
-        ll.draw(100, 400, 400, 100, Color.red);
-        l.draw(100,400,100,100,Color.BLUE);
-        ll.draw(400, 300, 100, 300, Color.red);
-        
-        ll.draw(450, 400, 150, 100,Color.red);
-        //new Pixel(this).draw(150, 100, Color.BLUE);
-        
-        new Rectangle(this).draw(450,100,650,300,Color.GREEN);
-        
-        new SimpleCircle(this).draw(450, 100, 650, 300,Color.ORANGE);
-        new SimpleCircle(this).draw(500, 150, 600, 250,Color.YELLOW);*/
+    }
+
+    public void paint(Graphics g) {
+
+       g.drawImage(b,0,0,this);
     }
 
     public static void main(String[] args) {

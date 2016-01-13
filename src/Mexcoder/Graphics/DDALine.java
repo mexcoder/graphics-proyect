@@ -6,6 +6,7 @@
 package Mexcoder.Graphics;
 
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.awt.Component;
  */
 public class DDALine extends SimpleLine {
 
-    public DDALine(Component c) {
+    public DDALine(BufferedImage c) {
         super(c);
     }
 

@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
  */
 public class Pixel extends AbstractPixel{
     
-    public Pixel(Component c){
+    public Pixel(BufferedImage c){
         super(c);
     }
 

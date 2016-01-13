@@ -6,6 +6,7 @@
 package Mexcoder.Graphics;
 
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.awt.Component;
  */
 public class Rectangle extends DDALine{
     
-    public Rectangle(Component c) {
+    public Rectangle(BufferedImage c) {
         super(c);
     }
     

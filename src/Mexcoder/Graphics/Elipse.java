@@ -7,6 +7,7 @@ package Mexcoder.Graphics;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.awt.Component;
  */
 public class Elipse extends SimpleCircle{
 
-    public Elipse(Component c) {
+    public Elipse(BufferedImage c) {
         super(c);
     }
     

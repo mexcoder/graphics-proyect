@@ -7,6 +7,7 @@ package Mexcoder.Graphics;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.awt.Component;
  */
 public class SimpleCircle extends AbstractPixel {
 
-    public SimpleCircle(Component c) {
+    public SimpleCircle(BufferedImage c) {
         super(c);
     }
     
@@ -23,6 +24,7 @@ public class SimpleCircle extends AbstractPixel {
         super.floodFill();
     }
     
+    @Override
     public void floodFill(Color c){
         super.floodFill(c);
     }

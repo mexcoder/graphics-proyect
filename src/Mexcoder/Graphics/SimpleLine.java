@@ -7,6 +7,7 @@ package Mexcoder.Graphics;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.awt.Component;
  */
 public class SimpleLine extends AbstractPixel {
 
-    public SimpleLine(Component c) {
+    public SimpleLine(BufferedImage c) {
         super(c);
     }
 
