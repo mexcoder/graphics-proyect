@@ -18,6 +18,8 @@ import Mexcoder.Graphics.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,6 +36,15 @@ public class test extends Ventana {
     BrensenhamCircle cc;
     MidpointCircle ccc;
     BufferedImage b;
+    Elipse e;
+    Thread renderer;
+    boolean render = true;
+    
+    @Override
+    protected void appExit(){
+        render = false;
+        
+    }
 
     public test() {
         super("test: linea");
@@ -43,16 +54,32 @@ public class test extends Ventana {
         ll = new DDALine(b);
         lll = new BrensenhamLine(b);
         llll = new MidpointLine(b);
+        e = new Elipse(b);
         r = new Rectangle(b);
         c = new SimpleCircle(b);
         cc = new BrensenhamCircle(b);
         ccc = new MidpointCircle(b);
-        
+
         doDrawing();
+        Ventana i = this;
+        
+       new Thread( new Runnable() {
+            public void run() {
+                while(render){
+                    try {
+                        Thread.sleep(100);
+                        i.repaint();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
+        }).run();
 
     }
-    
-    protected void doDrawing(){
+
+    protected void doDrawing() {
         //x0 --> x1 inclinada
         l.draw(10, 40, 310, 140, Color.RED);
         ll.draw(10, 50, 310, 150, Color.GREEN);
@@ -81,14 +108,46 @@ public class test extends Ventana {
         cc.draw(650, 340, 450, 140, Color.GREEN);
         ccc.draw(400, 90, 700, 390, Color.orange);
 
-       Elipse l = new Elipse(b);
-       l.draw(10, 400, 310, 550);
-       l.floodFill(Color.GREEN);
+        e.draw(10, 400, 310, 550);
+        e.draw(30, 420, 290, 530);
+        e.draw(50, 440, 270, 510);
+        e.floodFill(Color.GREEN);
+        
+        r.draw(350, 450, 450, 550);
+        r.scanLine(Color.ORANGE);
+        
+        r.setMask((byte)0xc3);
+        r.draw(460, 450, 560, 550);
+        r.setMask((byte)0xff);
+        
+        lll.setMask((byte)0xc3);
+        lll.draw(460, 450, 560, 550);
+        lll.draw(560, 450, 460, 550);
+        lll.setMask((byte)0xff);
+        
+//        try {
+//            /*Ventana i = this;
+//            
+//            Runnable runnable = new Runnable() {
+//            public void run() {
+//            try {
+//            Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            //i.repaint();
+//            }
+//            };*/
+//            Thread.sleep(1600); //give it time to finish rendering
+//            //runnable.run();
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public void paint(Graphics g) {
 
-       g.drawImage(b,0,0,this);
+        g.drawImage(b, 0, 0, this);
     }
 
     public static void main(String[] args) {

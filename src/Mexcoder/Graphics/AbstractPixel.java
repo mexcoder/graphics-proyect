@@ -6,7 +6,10 @@
 package Mexcoder.Graphics;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -15,8 +18,11 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractPixel {
 
     protected BufferedImage buffer;
-    protected Color c, tc;
+    protected Color c;
+    int tc;
     protected int center[];
+    protected byte mask = (byte)0b11111111;
+    protected int steeps = 0;
 
     protected AbstractPixel() {
         this.setColor(Color.BLACK);
@@ -32,13 +38,14 @@ public abstract class AbstractPixel {
     }
 
     protected final void putPixel(int x, int y) {
-        buffer.setRGB(x, y, this.c.getRGB());
+
+        if (this.mask == 0xff ||((this.mask >> (this.steeps++ % 8)) & 0x1) != 0) {
+            buffer.setRGB(x, y, this.c.getRGB());
+        }
     }
 
     public final void setColor(Color c) {
         this.c = c;
-        buffer.setRGB(0, 0, c.getRGB());
-
     }
 
     protected void floodFill(Color c) {
@@ -51,22 +58,36 @@ public abstract class AbstractPixel {
 
     protected void floodFill() {
 
-        tc = new Color(this.buffer.getRGB(center[0], center[1]));
+        tc = this.buffer.getRGB(center[0], center[1]);
         floodFill(center[0], center[1]);
     }
 
     protected void floodFill(int x, int y) {
-        //get color and mark
-        if (this.buffer.getRGB(x, y) == this.c.getRGB())//si ya esta marcado
-        {
-            return;
+        //wont work recursive
+        LinkedList<Point> list = new LinkedList<Point>();
+
+        list.add(new Point(x, y));
+        Point p;
+
+        while (!list.isEmpty()) {
+            p = list.pop();
+            x = p.x;
+            y = p.y;
+
+            //get color and mark
+            if (this.buffer.getRGB(x, y) != this.tc)//si ya esta marcado
+            {
+                continue;
+            }
+
+            this.putPixel(x, y);
+            list.add(new Point(x, y));
+            list.add(new Point(x - 1, y));
+            list.add(new Point(x + 1, y));
+            list.add(new Point(x, y - 1));
+            list.add(new Point(x, y + 1));
         }
-        this.putPixel(x, y);
-        floodFill(x - 1, y);
-        floodFill(x + 1, y);
-        floodFill(x, y - 1);
-        floodFill(x, y + 1);
-        
+
     }
 
     protected void setCenter(int x, int y) {
@@ -76,6 +97,42 @@ public abstract class AbstractPixel {
             this.center[0] = x;
             this.center[1] = y;
         }
+    }
+
+    protected void scanLine() {
+        tc = this.buffer.getRGB(center[0], center[1]);
+        scanLine(center[0], center[1]);
+    }
+
+    protected void scanLine(Color c) {
+        Color tmp = this.c;
+        this.setColor(c);
+        this.scanLine();
+        this.setColor(tmp);
+
+    }
+
+    private void scanLine(int x, int y) {
+
+        //get to the corner
+        while (this.buffer.getRGB(x - 1, y - 1) == this.tc)//si ya esta marcado
+        {
+            x--;
+            y--;
+        }
+
+        int startx = x;
+
+        while (this.buffer.getRGB(x, y) == this.tc)//si ya esta marcado
+        {
+            while (this.buffer.getRGB(x, y) == this.tc)//si ya esta marcado
+            {
+                this.putPixel(x++, y);
+            }
+            y++;
+            x = startx;
+        }
+
     }
 
 }

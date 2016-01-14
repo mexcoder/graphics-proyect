@@ -17,6 +17,10 @@ public class BrensenhamLine extends SimpleLine {
     public BrensenhamLine(BufferedImage c) {
         super(c);
     }
+    
+    public void setMask(byte m){
+        this.mask = m;
+    };
 
     @Override
     public void draw(int x0, int y0, int x1, int y1) {
