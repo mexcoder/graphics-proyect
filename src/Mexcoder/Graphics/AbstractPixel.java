@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  *
@@ -21,10 +20,19 @@ public abstract class AbstractPixel {
     protected Color c;
     int tc;
     protected int center[];
-    protected byte mask = (byte)0b11111111;
+    protected byte mask = (byte) 0b11111111;
     protected int steeps = 0;
+    protected int bx0, by0, bx1, by1;
+
+    public void bountToRect(int x0, int y0, int x1, int y1) {
+        this.bx0 = x0;
+        this.by0 = y0;
+        this.bx1 = x1;
+        this.by1 = y1;
+    }
 
     protected AbstractPixel() {
+        this.bountToRect(-1, -1, -1, -1);
         this.setColor(Color.BLACK);
     }
 
@@ -37,10 +45,15 @@ public abstract class AbstractPixel {
         this.buffer = canvas;
     }
 
-    protected final void putPixel(int x, int y) {
-
-        if (this.mask == 0xff ||((this.mask >> (this.steeps++ % 8)) & 0x1) != 0) {
-            buffer.setRGB(x, y, this.c.getRGB());
+    protected void putPixel(int x, int y) {
+        //if((this.bx0!=-1 && this.bx0<x && this.bx1>x && this.by0<y && this.by1 > y))
+        //if ((this.bx0!=-1 && this.bx0<x && this.bx1>x && this.by0<y && this.by1 > y) && (this.mask == 0xff || ((this.mask >> (this.steeps++ % 8)) & 0x1) != 0)) {
+        if(this.mask == 0xff || ((this.mask >> (this.steeps++ % 8)) & 0x1) != 0){
+            try {
+                buffer.setRGB(x, y, this.c.getRGB());
+            } catch (Exception e) {
+            }
+            
         }
     }
 
@@ -115,9 +128,13 @@ public abstract class AbstractPixel {
     private void scanLine(int x, int y) {
 
         //get to the corner
-        while (this.buffer.getRGB(x - 1, y - 1) == this.tc)//si ya esta marcado
+        while (this.buffer.getRGB(x - 1, y) == this.tc)//si ya esta marcado
         {
             x--;
+        }
+        
+        while (this.buffer.getRGB(x, y-1) == this.tc)//si ya esta marcado
+        {
             y--;
         }
 

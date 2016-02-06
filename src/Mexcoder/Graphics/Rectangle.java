@@ -51,5 +51,19 @@ public class Rectangle extends BrensenhamLine{
     public void scanLine(Color c){
         super.scanLine(c);
     }
-    
+  
+    /*protected void scanLine(int x, int y){
+        int startx = 1;
+        x = 1;
+        y = 1;
+        while (this.buffer.getRGB(x, y) == this.tc)//si ya esta marcado
+        {
+            while (this.buffer.getRGB(x, y) == this.tc)//si ya esta marcado
+            {
+                this.putPixel(x++, y);
+            }
+            y++;
+            x = startx;
+        }
+    }*/
 }

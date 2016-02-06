@@ -7,6 +7,7 @@ package Mexcoder;
 
 import Mexcoder.Graphics.BrensenhamCircle;
 import Mexcoder.Graphics.BrensenhamLine;
+import Mexcoder.Graphics.CircleWidth;
 import Mexcoder.Graphics.SimpleCircle;
 import Mexcoder.Graphics.DDALine;
 import Mexcoder.Graphics.Elipse;
@@ -15,6 +16,7 @@ import Mexcoder.Graphics.MidpointLine;
 import Mexcoder.Graphics.SimpleLine;
 import Mexcoder.Graphics.Pixel;
 import Mexcoder.Graphics.Rectangle;
+import Mexcoder.Graphics.lineWidth;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -35,15 +37,18 @@ public class test extends Ventana {
     SimpleCircle c;
     BrensenhamCircle cc;
     MidpointCircle ccc;
-    BufferedImage b;
+    BufferedImage b,ba;
     Elipse e;
+    lineWidth lw;
+    CircleWidth cw;
+
     Thread renderer;
     boolean render = true;
-    
+
     @Override
-    protected void appExit(){
+    protected void appExit() {
         render = false;
-        
+
     }
 
     public test() {
@@ -59,21 +64,36 @@ public class test extends Ventana {
         c = new SimpleCircle(b);
         cc = new BrensenhamCircle(b);
         ccc = new MidpointCircle(b);
-
-        doDrawing();
+        lw = new lineWidth(b);
+        cw = new CircleWidth(b);
+        
+        
+        
+        
         Ventana i = this;
         
-       new Thread( new Runnable() {
+        
+       
+        
+        doDrawing();
+        this.setVisible(true);
+        
+        //ventana 2
+        Ventana a = new recorte();
+        a.setVisible(true);
+        
+        new Thread(new Runnable() {
             public void run() {
-                while(render){
+                //while (render) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(600);
                         i.repaint();
+                        a.repaint();
                     } catch (InterruptedException ex) {
                         Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                
+                //}
+
             }
         }).run();
 
@@ -112,37 +132,29 @@ public class test extends Ventana {
         e.draw(30, 420, 290, 530);
         e.draw(50, 440, 270, 510);
         e.floodFill(Color.GREEN);
-        
+
         r.draw(350, 450, 450, 550);
         r.scanLine(Color.ORANGE);
-        
-        r.setMask((byte)0xc3);
+
+        r.setMask((byte) 0xc3);
         r.draw(460, 450, 560, 550);
-        r.setMask((byte)0xff);
-        
-        lll.setMask((byte)0xc3);
+        r.setMask((byte) 0xff);
+
+        lll.setMask((byte) 0xc3);
         lll.draw(460, 450, 560, 550);
         lll.draw(560, 450, 460, 550);
-        lll.setMask((byte)0xff);
+        lll.setMask((byte) 0xff);
+
+        lw.setWidth(10);
+
+        lw.draw(570, 450, 670, 450);
+        lw.draw(570, 450, 570, 550);
+        lw.draw(570, 550, 670, 550);
+        lw.draw(670, 450, 670, 559);
+        lw.draw(570, 450, 670, 550);
         
-//        try {
-//            /*Ventana i = this;
-//            
-//            Runnable runnable = new Runnable() {
-//            public void run() {
-//            try {
-//            Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            //i.repaint();
-//            }
-//            };*/
-//            Thread.sleep(1600); //give it time to finish rendering
-//            //runnable.run();
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        cw.setWidth(10);
+        cw.drawAtCenter(550, 240, 50);
     }
 
     public void paint(Graphics g) {
